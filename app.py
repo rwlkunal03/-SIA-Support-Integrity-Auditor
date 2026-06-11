@@ -9,7 +9,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 # ── Config ────────────────────────────────────────────────────
-MODEL_PATH  = r'C:\Users\rawal\OneDrive\Desktop\mars\models\sia_classifier_final'
+MODEL_PATH = 'distilbert-base-uncased'
 THRESHOLD   = 0.46
 URGENT_WORDS = [
     'urgent', 'asap', 'immediately', 'emergency', 'critical',
@@ -316,15 +316,13 @@ elif page == "📊 Dashboard":
     st.markdown("---")
 
     try:
-        df = pd.read_csv(
-            r'C:\Users\rawal\OneDrive\Desktop\mars\outputs\test_predictions.csv'
-        )
+        df = pd.read_csv('outputs/test_predictions.csv') if os.path.exists('outputs/test_predictions.csv') else None
 
         total      = len(df)
         mismatches = df['predicted_mismatch'].sum()
         consistent = total - mismatches
         avg_conf   = df['confidence'].mean()
-
+        
         # Top metrics
         col1, col2, col3, col4 = st.columns(4)
         col1.metric("Total Tickets",  f"{total:,}")
