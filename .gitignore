@@ -1,0 +1,14 @@
+models/
+outputs/
+embeddings.npy
+tickets.csv
+tickets_clean.csv
+tickets_labeled.csv
+SIA_project/
+*.npy
+*.zip
+*.pdf
+*.pyc
+__pycache__/
+.venv/
+sia_predictions.csv
