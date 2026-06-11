@@ -4,13 +4,13 @@ import numpy as np
 import torch
 import json
 import re
+import os
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import plotly.express as px
-import plotly.graph_objects as go
 
-# ── Config ────────────────────────────────────────────────────
+# Config
 MODEL_PATH = 'distilbert-base-uncased'
-THRESHOLD   = 0.46
+THRESHOLD  = 0.46
 URGENT_WORDS = [
     'urgent', 'asap', 'immediately', 'emergency', 'critical',
     'cannot access', 'not working', 'broken', 'error', 'failed',
