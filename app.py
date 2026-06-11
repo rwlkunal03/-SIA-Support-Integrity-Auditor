@@ -315,19 +315,18 @@ elif page == "📊 Dashboard":
     st.title("📊 Priority Mismatch Dashboard")
     st.markdown("---")
 
-    try:
-      if os.path.exists('outputs/test_predictions.csv'):
-        df = pd.read_csv('outputs/test_predictions.csv')
-      else:
-        st.warning("No predictions file found. Please use Batch CSV tab to generate predictions first.")
-        st.stop()
+    pred_file = 'outputs/test_predictions.csv'
 
-    total      = len(df)
+    if not os.path.exists(pred_file):
+        st.warning("No predictions file found. Use Batch CSV tab first.")
+    else:
+        df = pd.read_csv(pred_file)
+
+        total      = len(df)
         mismatches = df['predicted_mismatch'].sum()
         consistent = total - mismatches
         avg_conf   = df['confidence'].mean()
-        
-        # Top metrics
+
         col1, col2, col3, col4 = st.columns(4)
         col1.metric("Total Tickets",  f"{total:,}")
         col2.metric("Mismatches",     f"{mismatches:,}")
@@ -338,7 +337,6 @@ elif page == "📊 Dashboard":
 
         col1, col2 = st.columns(2)
 
-        # Chart 1: Mismatch by Priority
         with col1:
             st.markdown("### Mismatch by Priority Level")
             priority_counts = df.groupby(
@@ -357,6 +355,23 @@ elif page == "📊 Dashboard":
             )
             st.plotly_chart(fig1, use_container_width=True)
 
+        with col2:
+            st.markdown("### Mismatch by Channel")
+            channel_counts = df.groupby(
+                ['Ticket_Channel', 'result']
+            ).size().reset_index(name='count')
+            fig2 = px.bar(
+                channel_counts,
+                x='Ticket_Channel',
+                y='count',
+                color='result',
+                barmode='group',
+                color_discrete_map={
+                    'Mismatch':   '#ef4444',
+                    'Consistent': '#22c55e'
+                }
+            )
+            st.plotly_chart(fig2,
         # Chart 2: Mismatch by Channel
         with col2:
             st.markdown("### Mismatch by Channel")
