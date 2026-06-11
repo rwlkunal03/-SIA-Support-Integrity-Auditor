@@ -316,9 +316,13 @@ elif page == "📊 Dashboard":
     st.markdown("---")
 
     try:
-        df = pd.read_csv('outputs/test_predictions.csv') if os.path.exists('outputs/test_predictions.csv') else None
+    if os.path.exists('outputs/test_predictions.csv'):
+        df = pd.read_csv('outputs/test_predictions.csv')
+    else:
+        st.warning("No predictions file found. Please use Batch CSV tab to generate predictions first.")
+        st.stop()
 
-        total      = len(df)
+    total      = len(df)
         mismatches = df['predicted_mismatch'].sum()
         consistent = total - mismatches
         avg_conf   = df['confidence'].mean()
