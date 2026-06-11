@@ -316,9 +316,9 @@ elif page == "📊 Dashboard":
     st.markdown("---")
 
     try:
-    if os.path.exists('outputs/test_predictions.csv'):
+      if os.path.exists('outputs/test_predictions.csv'):
         df = pd.read_csv('outputs/test_predictions.csv')
-    else:
+      else:
         st.warning("No predictions file found. Please use Batch CSV tab to generate predictions first.")
         st.stop()
 
